@@ -1,3 +1,6 @@
+using LocMp.Identity.Api.Extensions;
+using LocMp.Identity.Application.Extensions;
+using LocMp.Identity.Infrastructure.Extensions;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -10,8 +13,13 @@ Log.Logger = new LoggerConfiguration()
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+    var configuration = builder.Configuration;
 
     builder.Host.UseSerilog();
+
+    builder.Services.AddDbExtension(configuration);
+    builder.Services.AddApplication();
+    builder.Services.AddApi();
 
     builder.Services.AddOpenApi();
 
@@ -26,9 +34,14 @@ try
             options
                 .WithTheme(ScalarTheme.Mars)
                 .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
-        });}
+        });
+    }
 
     app.UseHttpsRedirection();
+    app.UseExceptionHandler();
+    app.MapControllers();
+
+    Log.Information("Application started successfully");
 
     app.Run();
 }
