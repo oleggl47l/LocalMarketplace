@@ -180,7 +180,7 @@ namespace LocMp.Identity.Infrastructure.Migrations
                     Apartment = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     Entrance = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
                     Floor = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
-                    Location = table.Column<Point>(type: "geometry", nullable: false),
+                    Location = table.Column<Point>(type: "geometry(Point, 4326)", nullable: false),
                     IsDefault = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -231,12 +231,6 @@ namespace LocMp.Identity.Infrastructure.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserAddresses_Location",
-                table: "UserAddresses",
-                column: "Location")
-                .Annotation("Npgsql:IndexMethod", "GIST");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserAddresses_UserId",

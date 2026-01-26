@@ -174,7 +174,7 @@ namespace LocMp.Identity.Infrastructure.Migrations
 
                     b.Property<Point>("Location")
                         .IsRequired()
-                        .HasColumnType("geometry");
+                        .HasColumnType("geometry(Point, 4326)");
 
                     b.Property<string>("Street")
                         .IsRequired()
@@ -190,10 +190,6 @@ namespace LocMp.Identity.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Location");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Location"), "GIST");
 
                     b.HasIndex("UserId");
 

@@ -25,7 +25,8 @@ public class UserAddressConfiguration : IEntityTypeConfiguration<UserAddress>
             .HasForeignKey(a => a.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(a => a.Location)
-            .HasMethod("GIST");
+        builder.Property(x => x.Location)
+            .HasColumnType("geometry(Point, 4326)") 
+            .IsRequired();
     }
 }
