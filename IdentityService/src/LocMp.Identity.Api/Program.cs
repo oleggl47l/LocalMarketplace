@@ -17,14 +17,13 @@ try
 
     builder.Host.UseSerilog();
 
-    builder.Services.AddDbExtension(configuration);
+    builder.Services.AddInfrastructure(configuration);
     builder.Services.AddApplication();
     builder.Services.AddApi();
 
     builder.Services.AddOpenApi();
 
     var app = builder.Build();
-
 
     if (app.Environment.IsDevelopment())
     {
@@ -45,7 +44,7 @@ try
 
     app.Run();
 }
-catch (Exception ex)
+catch (Exception ex) when (ex is not OperationCanceledException && ex.GetType().Name != "HostAbortedException")
 {
     Log.Fatal(ex, "Application terminated unexpectedly");
 }
