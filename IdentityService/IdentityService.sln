@@ -4,11 +4,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocMp.Identity.Api", "src\L
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9C655593-123F-4437-B819-FE7B0BC867F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocMp.Identity.Domain", "LocMp.Identity.Domain\LocMp.Identity.Domain.csproj", "{9FE6D1ED-80C9-49BA-A59F-A264C74BDD7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocMp.Identity.Domain", "src\LocMp.Identity.Domain\LocMp.Identity.Domain.csproj", "{9FE6D1ED-80C9-49BA-A59F-A264C74BDD7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocMp.Identity.Infrastructure", "LocMp.Identity.Infrastructure\LocMp.Identity.Infrastructure.csproj", "{42625848-9901-4436-92B7-DAF65FF5731A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocMp.Identity.Infrastructure", "src\LocMp.Identity.Infrastructure\LocMp.Identity.Infrastructure.csproj", "{42625848-9901-4436-92B7-DAF65FF5731A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocMp.Identity.Application", "LocMp.Identity.Application\LocMp.Identity.Application.csproj", "{E3CDD735-6FB6-4262-BCA0-FC3937C26388}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocMp.Identity.Application", "src\LocMp.Identity.Application\LocMp.Identity.Application.csproj", "{E3CDD735-6FB6-4262-BCA0-FC3937C26388}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
