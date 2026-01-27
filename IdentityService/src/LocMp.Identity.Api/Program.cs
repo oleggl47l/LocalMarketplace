@@ -1,6 +1,7 @@
 using LocMp.Identity.Api.Extensions;
 using LocMp.Identity.Application.Extensions;
 using LocMp.Identity.Infrastructure.Extensions;
+using LocMp.Identity.Infrastructure.Persistence;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -35,6 +36,7 @@ try
                 .WithTheme(ScalarTheme.Mars)
                 .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
         });
+        await IdentityDataSeeder.SeedAsync(app.Services);
     }
 
     app.UseHttpsRedirection();
