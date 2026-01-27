@@ -414,8 +414,10 @@ FodyWeavers.xsd
 bin/
 obj/
 
+# CUSTOM
+
 # Logs folder
 Logs/
 
-# OpenIddict Keys
 keys/
+tempkey.jwk

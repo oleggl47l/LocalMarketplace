@@ -1,8 +1,6 @@
-﻿using LocMp.Identity.Domain.Entities;
+﻿using LocMp.Identity.Infrastructure.Options;
 using LocMp.Identity.Infrastructure.Persistence;
-using LocMp.Identity.Infrastructure.Services;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +16,6 @@ public static class InfrastructureExtension
                                    "Connection string 'LocalMarketplaceDb' not found.");
 
         var keysDirectory = Path.Combine(Directory.GetCurrentDirectory(), "keys");
-
         if (!Directory.Exists(keysDirectory))
             Directory.CreateDirectory(keysDirectory);
 
@@ -33,17 +30,6 @@ public static class InfrastructureExtension
                 x => x.UseNetTopologySuite());
         });
 
-        services.AddIdentityCore<ApplicationUser>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-                options.User.RequireUniqueEmail = true;
-            })
-            .AddRoles<ApplicationRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddSignInManager()
-            .AddDefaultTokenProviders();
-
-        services.AddHostedService<DbClientInitializer>();
+        services.Configure<IdentityServerSettings>(configuration.GetSection("IdentityServer"));
     }
 }

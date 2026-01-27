@@ -19,7 +19,8 @@ try
     builder.Host.UseSerilog();
 
     builder.Services.AddInfrastructure(configuration);
-    builder.Services.AddIdentityServer();
+    builder.Services.AddIdentityConfiguration();
+    builder.Services.AddIdentityServerConfiguration(configuration);
     builder.Services.AddApplication();
     builder.Services.AddApi();
 
@@ -41,6 +42,7 @@ try
 
     app.UseHttpsRedirection();
 
+    app.UseIdentityServer();
     app.UseAuthentication();
     app.UseAuthorization();
 
