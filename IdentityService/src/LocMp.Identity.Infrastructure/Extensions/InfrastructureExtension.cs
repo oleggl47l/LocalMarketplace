@@ -1,5 +1,7 @@
 ﻿using LocMp.Identity.Domain.Entities;
 using LocMp.Identity.Infrastructure.Persistence;
+using LocMp.Identity.Infrastructure.Services;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +17,15 @@ public static class InfrastructureExtension
                                ?? throw new InvalidOperationException(
                                    "Connection string 'LocalMarketplaceDb' not found.");
 
+        var keysDirectory = Path.Combine(Directory.GetCurrentDirectory(), "keys");
+
+        if (!Directory.Exists(keysDirectory))
+            Directory.CreateDirectory(keysDirectory);
+
+        services.AddDataProtection()
+            .PersistKeysToFileSystem(new DirectoryInfo(keysDirectory))
+            .SetApplicationName("LocMp-Identity");
+
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseNpgsql(
@@ -28,7 +39,11 @@ public static class InfrastructureExtension
                 options.Password.RequiredLength = 8;
                 options.User.RequireUniqueEmail = true;
             })
-            .AddRoles<IdentityRole<Guid>>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddRoles<ApplicationRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddSignInManager()
+            .AddDefaultTokenProviders();
+
+        services.AddHostedService<DbClientInitializer>();
     }
 }
