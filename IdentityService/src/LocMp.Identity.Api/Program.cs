@@ -18,6 +18,7 @@ try
     builder.Host.UseSerilog();
 
     builder.Services.AddInfrastructure(configuration);
+    builder.Services.AddIdentityServer();
     builder.Services.AddApplication();
     builder.Services.AddApi();
 
@@ -37,6 +38,10 @@ try
     }
 
     app.UseHttpsRedirection();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
     app.UseExceptionHandler();
     app.MapControllers();
 

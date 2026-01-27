@@ -12,7 +12,8 @@ public static class InfrastructureExtension
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("LocalMarketplaceDb")
-                               ?? throw new InvalidOperationException("Connection string 'LocalMarketplaceDb' not found.");
+                               ?? throw new InvalidOperationException(
+                                   "Connection string 'LocalMarketplaceDb' not found.");
 
         services.AddDbContext<ApplicationDbContext>(options =>
         {
