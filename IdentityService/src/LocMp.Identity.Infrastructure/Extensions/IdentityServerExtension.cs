@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.Models;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
 using LocMp.Identity.Domain.Entities;
 using LocMp.Identity.Infrastructure.Options;
 using LocMp.Identity.Infrastructure.Services;
@@ -42,11 +43,8 @@ public static class IdentityServerExtension
             })
             .AddInMemoryApiScopes(new List<ApiScope>
             {
-                new()
-                {
-                    Name = "api",
-                    UserClaims = { "name", "email", "role", "username" }
-                }
+                new("api"),
+                new(IdentityServerConstants.LocalApi.ScopeName)
             })
             .AddAspNetIdentity<ApplicationUser>()
             .AddProfileService<ProfileService>()

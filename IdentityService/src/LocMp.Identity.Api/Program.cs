@@ -1,8 +1,6 @@
 using LocMp.Identity.Api.Extensions;
 using LocMp.Identity.Application.Extensions;
 using LocMp.Identity.Infrastructure.Extensions;
-using LocMp.Identity.Infrastructure.Persistence;
-using Scalar.AspNetCore;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -22,7 +20,8 @@ try
     builder.Services.AddIdentityConfiguration();
     builder.Services.AddIdentityServerConfiguration(configuration);
     builder.Services.AddApplication();
-    builder.Services.AddApi();
+    builder.Services.AddApi(configuration);
+    builder.Services.AddSwagger(configuration);
 
     builder.Services.AddOpenApi();
 
@@ -30,14 +29,7 @@ try
 
     if (app.Environment.IsDevelopment())
     {
-        app.MapOpenApi();
-        app.MapScalarApiReference(options =>
-        {
-            options
-                .WithTheme(ScalarTheme.Mars)
-                .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
-        });
-        await IdentityDataSeeder.SeedAsync(app.Services);
+        app.UseSwaggerUi(configuration);
     }
 
     app.UseHttpsRedirection();
