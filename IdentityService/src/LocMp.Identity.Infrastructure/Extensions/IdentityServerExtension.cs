@@ -50,6 +50,7 @@ public static class IdentityServerExtension
             })
             .AddAspNetIdentity<ApplicationUser>()
             .AddProfileService<ProfileService>()
+            .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
             .AddDeveloperSigningCredential();
     }
 }
