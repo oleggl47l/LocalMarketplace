@@ -11,14 +11,16 @@ builder.Configuration.AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}
 
 builder.Host.AddSerilogLogging();
 
+builder.Services.AddControllers();
 builder.Services.ConfigureOptions(builder.Configuration);
 builder.Services.AddCorsConfiguration();
-builder.Services.AddJwtAuthentication();
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddSwaggerGen();
 builder.Services.AddGateway(builder.Configuration);
-builder.Services.AddDocumentation(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseStaticFiles();
 app.UseCors();
 app.UseRouting();
 
@@ -31,7 +33,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerForOcelotUI();
 }
 
-app.UseRouting();
 app.MapControllers();
 
 await app.UseOcelot();

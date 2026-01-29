@@ -1,30 +1,33 @@
 ﻿using LocMp.Gateway.Api.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace LocMp.Gateway.Api.Extensions;
 
 public static class AuthenticationExtensions
 {
-    public static void AddJwtAuthentication(this IServiceCollection services)
+    public static void AddJwtAuthentication(this IServiceCollection services,
+        IConfiguration configuration)
     {
-        var serviceProvider = services.BuildServiceProvider();
-        var authOptions = serviceProvider.GetRequiredService<IOptions<AuthenticationOptions>>().Value;
+        var jwtOptions = configuration.GetSection("AuthenticationOptions").Get<AuthenticationOptions>() ??
+                         throw new ArgumentNullException(nameof(AuthenticationOptions));
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer("IdentityKey", options =>
+        services.AddAuthentication(options =>
             {
-                options.Authority = authOptions.Authority;
-                options.Audience = authOptions.Audience;
-                options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(opt =>
+            {
+                opt.SaveToken = true;
+                opt.RequireHttpsMetadata = false;
+                opt.Authority = jwtOptions.Authority;
+                opt.RequireHttpsMetadata = false;
+                opt.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidIssuer = authOptions.Authority,
-                    ValidateAudience = true,
-                    ValidAudience = authOptions.Audience,
-                    ValidateLifetime = true
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                 };
             });
     }
