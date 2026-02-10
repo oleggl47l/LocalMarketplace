@@ -17,5 +17,6 @@ public static class ApplicationExtension
         });
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddAutoMapper(typeof(ApplicationExtension).Assembly);
     }
 }
