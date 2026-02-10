@@ -1,5 +1,9 @@
 using LocMp.Identity.Application.DTOs.Common;
 using LocMp.Identity.Application.DTOs.User;
+using LocMp.Identity.Application.Identity.Commands.Users.RegisterUser;
+using LocMp.Identity.Application.Identity.Commands.Users.UpdateUser;
+using LocMp.Identity.Application.Identity.Commands.Users.DeleteUser;
+using LocMp.Identity.Application.Identity.Commands.Users.UpdateUserRoles;
 using LocMp.Identity.Application.Identity.Queries.Users.GetUserByEmail;
 using LocMp.Identity.Application.Identity.Queries.Users.GetUserById;
 using LocMp.Identity.Application.Identity.Queries.Users.GetUserByPhoneNumber;
@@ -56,5 +60,33 @@ public class UsersController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(new GetUserByPhoneNumberQuery(phone));
         return Ok(result);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<UserDto>> Register([FromBody] RegisterUserCommand command)
+    {
+        var result = await mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<UserDto>> Update(Guid id, [FromBody] UpdateUserCommand command)
+    {
+        var result = await mediator.Send(command with { Id = id });
+        return Ok(result);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> Delete(Guid id)
+    {
+        await mediator.Send(new DeleteUserCommand(id));
+        return NoContent();
+    }
+
+    [HttpPut("{id:guid}/roles")]
+    public async Task<ActionResult> UpdateRoles(Guid id, [FromBody] UpdateUserRolesCommand command)
+    {
+        await mediator.Send(command with { UserId = id });
+        return NoContent();
     }
 }

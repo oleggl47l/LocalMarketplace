@@ -1,4 +1,7 @@
 using LocMp.Identity.Application.DTOs.Role;
+using LocMp.Identity.Application.Identity.Commands.Roles.CreateRole;
+using LocMp.Identity.Application.Identity.Commands.Roles.UpdateRole;
+using LocMp.Identity.Application.Identity.Commands.Roles.DeleteRole;
 using LocMp.Identity.Application.Identity.Queries.Roles.GetRoleById;
 using LocMp.Identity.Application.Identity.Queries.Roles.GetRoles;
 using MediatR;
@@ -22,5 +25,26 @@ public class RolesController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(new GetRoleByIdQuery(id));
         return Ok(result);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<RoleDto>> Create([FromBody] CreateRoleCommand command)
+    {
+        var result = await mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<RoleDto>> Update(Guid id, [FromBody] UpdateRoleCommand command)
+    {
+        var result = await mediator.Send(command with { Id = id });
+        return Ok(result);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult> Delete(Guid id)
+    {
+        await mediator.Send(new DeleteRoleCommand(id));
+        return NoContent();
     }
 }
