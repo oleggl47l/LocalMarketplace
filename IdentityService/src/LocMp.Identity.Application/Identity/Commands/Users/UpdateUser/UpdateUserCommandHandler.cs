@@ -24,6 +24,7 @@ public sealed class UpdateUserCommandHandler(
         user.LastName = request.LastName;
         user.PhoneNumber = request.PhoneNumber;
         user.Gender = (int?)request.Gender;
+        user.BirthDate = request.DateOfBirth;
         user.Active = request.Active;
 
         var result = await userManager.UpdateAsync(user).ConfigureAwait(false);

@@ -7,6 +7,7 @@ public sealed record UserDto(
     string FirstName,
     string LastName,
     int? Gender,
+    DateTime? DateOfBirth,
     string PhoneNumber,
     DateTime RegisteredAt,
     bool Active

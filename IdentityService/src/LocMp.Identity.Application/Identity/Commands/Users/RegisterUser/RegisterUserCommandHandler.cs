@@ -24,6 +24,7 @@ public sealed class RegisterUserCommandHandler(
             LastName = request.LastName,
             PhoneNumber = request.PhoneNumber,
             Gender = (int?)request.Gender,
+            BirthDate = request.DateOfBirth,
             Active = true,
             RegisteredAt = DateTime.UtcNow,
             EmailConfirmed = false

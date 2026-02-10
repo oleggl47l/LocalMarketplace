@@ -27,5 +27,10 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
         RuleFor(x => x.LastName)
             .NotEmpty()
             .MaximumLength(256);
+
+        RuleFor(x => x.DateOfBirth)
+            .LessThan(DateTime.UtcNow)
+            .When(x => x.DateOfBirth.HasValue)
+            .WithMessage("Date of birth must be in the past");
     }
 }
