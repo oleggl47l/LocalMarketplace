@@ -1,4 +1,5 @@
 using LocMp.Identity.Api.Requests;
+using LocMp.Identity.Api.Requests.UserProfile;
 using LocMp.Identity.Application.DTOs.UserProfile;
 using LocMp.Identity.Application.Identity.Commands.UserProfile.DeleteUserPhoto;
 using LocMp.Identity.Application.Identity.Commands.UserProfile.UpdateUserProfile;

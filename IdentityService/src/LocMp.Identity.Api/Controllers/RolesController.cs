@@ -1,3 +1,4 @@
+using LocMp.Identity.Api.Requests.Roles;
 using LocMp.Identity.Application.DTOs.Role;
 using LocMp.Identity.Application.Identity.Commands.Roles.CreateRole;
 using LocMp.Identity.Application.Identity.Commands.Roles.UpdateRole;
@@ -35,9 +36,15 @@ public class RolesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<ActionResult<RoleDto>> Update(Guid id, [FromBody] UpdateRoleCommand command)
+    public async Task<ActionResult<RoleDto>> Update(Guid id, [FromBody] UpdateRoleRequest request)
     {
-        var result = await mediator.Send(command with { Id = id });
+        var command = new UpdateRoleCommand(
+            id,
+            request.Name,
+            request.Active
+        );
+
+        var result = await mediator.Send(command);
         return Ok(result);
     }
 

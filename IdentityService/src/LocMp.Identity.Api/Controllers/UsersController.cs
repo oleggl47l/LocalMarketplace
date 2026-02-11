@@ -1,3 +1,4 @@
+using LocMp.Identity.Api.Requests.Users;
 using LocMp.Identity.Application.DTOs.Common;
 using LocMp.Identity.Application.DTOs.User;
 using LocMp.Identity.Application.Identity.Commands.Users.RegisterUser;
@@ -70,9 +71,21 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<ActionResult<UserDto>> Update(Guid id, [FromBody] UpdateUserCommand command)
+    public async Task<ActionResult<UserDto>> Update(Guid id, [FromBody] UpdateUserRequest request)
     {
-        var result = await mediator.Send(command with { Id = id });
+        var command = new UpdateUserCommand(
+            id,
+            request.UserName,
+            request.Email,
+            request.FirstName,
+            request.LastName,
+            request.PhoneNumber,
+            request.Gender,
+            request.DateOfBirth,
+            request.Active
+        );
+
+        var result = await mediator.Send(command);
         return Ok(result);
     }
 
@@ -84,9 +97,9 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id:guid}/roles")]
-    public async Task<ActionResult> UpdateRoles(Guid id, [FromBody] UpdateUserRolesCommand command)
+    public async Task<ActionResult> UpdateRoles(Guid id, [FromBody] UpdateUserRolesRequest request)
     {
-        await mediator.Send(command with { UserId = id });
+        await mediator.Send(new UpdateUserRolesCommand(id, request.Roles));
         return NoContent();
     }
 }
