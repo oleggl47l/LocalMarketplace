@@ -1,9 +1,11 @@
 using LocMp.Identity.Api.Requests.Users;
 using LocMp.Identity.Application.DTOs.Common;
 using LocMp.Identity.Application.DTOs.User;
+using LocMp.Identity.Application.Identity.Commands.Users.BlockUser;
 using LocMp.Identity.Application.Identity.Commands.Users.RegisterUser;
 using LocMp.Identity.Application.Identity.Commands.Users.UpdateUser;
 using LocMp.Identity.Application.Identity.Commands.Users.DeleteUser;
+using LocMp.Identity.Application.Identity.Commands.Users.UnblockUser;
 using LocMp.Identity.Application.Identity.Commands.Users.UpdateUserRoles;
 using LocMp.Identity.Application.Identity.Queries.Users.GetUserByEmail;
 using LocMp.Identity.Application.Identity.Queries.Users.GetUserById;
@@ -100,6 +102,20 @@ public class UsersController(IMediator mediator) : ControllerBase
     public async Task<ActionResult> UpdateRoles(Guid id, [FromBody] UpdateUserRolesRequest request)
     {
         await mediator.Send(new UpdateUserRolesCommand(id, request.Roles));
+        return NoContent();
+    }
+
+    [HttpPost("{id:guid}/block")]
+    public async Task<IActionResult> BlockUser(Guid id, [FromBody] BlockUserRequest request, CancellationToken ct)
+    {
+        await mediator.Send(new BlockUserCommand(id, request.DurationInMinutes), ct);
+        return NoContent();
+    }
+
+    [HttpPost("{id:guid}/unblock")]
+    public async Task<IActionResult> UnblockUser(Guid id, CancellationToken ct)
+    {
+        await mediator.Send(new UnblockUserCommand(id), ct);
         return NoContent();
     }
 }

@@ -1,4 +1,5 @@
-﻿using LocMp.Identity.Infrastructure.Options;
+﻿using LocMp.Identity.Infrastructure.BackgroundServices;
+using LocMp.Identity.Infrastructure.Options;
 using LocMp.Identity.Infrastructure.Persistence;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
@@ -31,5 +32,7 @@ public static class InfrastructureExtension
         });
 
         services.Configure<IdentityServerSettings>(configuration.GetSection("IdentityServer"));
+
+        services.AddHostedService<UserUnblockingBackgroundService>();
     }
 }
