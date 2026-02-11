@@ -12,4 +12,5 @@ public class ApplicationUser : IdentityUser<Guid>
     public bool Active { get; set; } = true;
     
     public virtual ICollection<UserAddress> Addresses { get; set; } = new List<UserAddress>();
+    public virtual UserPhoto? Photo { get; set; }
 }

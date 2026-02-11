@@ -1,6 +1,7 @@
 using LocMp.Identity.Api.Extensions;
 using LocMp.Identity.Application.Extensions;
 using LocMp.Identity.Infrastructure.Extensions;
+using LocMp.Identity.Infrastructure.Persistence;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -21,6 +22,7 @@ try
     builder.Services.AddIdentityServerConfiguration(configuration);
     builder.Services.AddApplication();
     builder.Services.AddApi(configuration);
+    builder.Services.AddAuth(configuration);
     builder.Services.AddSwagger(configuration);
 
     builder.Services.AddOpenApi();
@@ -30,13 +32,12 @@ try
     if (app.Environment.IsDevelopment())
     {
         app.UseSwaggerUi(configuration);
+        await IdentityDataSeeder.SeedAsync(app.Services);
     }
 
     app.UseHttpsRedirection();
 
     app.UseIdentityServer();
-    app.UseAuthentication();
-    app.UseAuthorization();
 
     app.UseExceptionHandler();
     app.MapControllers();

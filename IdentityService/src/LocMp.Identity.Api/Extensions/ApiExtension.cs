@@ -18,8 +18,5 @@ public static class ApiExtension
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
-
-        services.AddAuthentication(IdentityServerConstants.LocalApi.AuthenticationScheme);
-        services.AddLocalApiAuthentication();
     }
 }

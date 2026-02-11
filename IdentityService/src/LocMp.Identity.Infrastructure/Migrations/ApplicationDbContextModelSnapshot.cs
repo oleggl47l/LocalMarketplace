@@ -203,6 +203,38 @@ namespace LocMp.Identity.Infrastructure.Migrations
                     b.ToTable("UserAddresses", (string)null);
                 });
 
+            modelBuilder.Entity("LocMp.Identity.Domain.Entities.UserPhoto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<byte[]>("PhotoData")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserPhotos", "media");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -317,6 +349,17 @@ namespace LocMp.Identity.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("LocMp.Identity.Domain.Entities.UserPhoto", b =>
+                {
+                    b.HasOne("LocMp.Identity.Domain.Entities.ApplicationUser", "User")
+                        .WithOne("Photo")
+                        .HasForeignKey("LocMp.Identity.Domain.Entities.UserPhoto", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("LocMp.Identity.Domain.Entities.ApplicationRole", null)
@@ -371,6 +414,8 @@ namespace LocMp.Identity.Infrastructure.Migrations
             modelBuilder.Entity("LocMp.Identity.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Addresses");
+
+                    b.Navigation("Photo");
                 });
 #pragma warning restore 612, 618
         }
